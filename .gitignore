@@ -1,0 +1,43 @@
+.env
+.env-development
+.env-production
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Output of 'npm pack'
+*.tgz
+
+# Random crap
+trash
+.DS_Store
+.sass-cache
+.tmp
+.rvmrc
+.trashes
+*~
+
+# Gatsby related
+.cache/
+public
+
+# Editor
+.vscode
+.vscode-test
+*.sublime-project
+*.sublime-workspace
+sftp-config.json
+
+dist/
+

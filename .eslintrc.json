@@ -1,0 +1,54 @@
+{
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": [
+      "tsconfig.json"
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "*.ts",
+        "*.tsx"
+      ]
+    }
+  ],
+  "parser": "@typescript-eslint/parser",
+  "env": {
+    "node": true,
+    "es6": true
+  },
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "extends": [
+    "eslint:recommended"
+  ],
+  "reportUnusedDisableDirectives": true,
+  "rules": {
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "comma-dangle": [
+      "error",
+      "never"
+    ],
+    "no-extra-semi": [
+      "error"
+    ],
+    "no-multiple-empty-lines": [
+      "error",
+      {
+        "max": 1,
+        "maxEOF": 1,
+        "maxBOF": 1
+      }
+    ],
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "error",
+    "no-constant-condition": "off",
+    "semi": "error"
+  }
+}

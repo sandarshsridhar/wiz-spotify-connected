@@ -1,0 +1,15 @@
+config:
+  target: "http://localhost:1251/api/rooms/6970941"
+  phases:
+    - duration: 60
+      arrivalRate: 3
+      name: Warm up
+    - duration: 120
+      arrivalRate: 5
+      name: Sustained load
+
+scenarios:
+  - name: "Change lights at light speed 🫠"
+    flow:
+      - post:
+          url: "/?state=true&red={{ $randomNumber(0, 255) }}&green={{ $randomNumber(0, 255) }}&blue={{ $randomNumber(0, 255) }}&dimming=100"
