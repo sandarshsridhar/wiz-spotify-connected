@@ -1,12 +1,13 @@
 import express, { Express, Request, Response } from 'express';
 import NodeCache from 'node-cache';
 import queryString from 'query-string';
+import { Bulb } from './classes/type-definitions.js';
 import { appConfig } from './configs/app-config.js';
 import { authConfig } from './configs/spotify-config.js';
 import { emitDanceToSpotifyEvent } from './handlers/emitters/dance-to-spotify-emitter.js';
 import { listenToDanceToSpotifyEvent } from './handlers/listeners/dance-to-spotify-listener.js';
 import { getAuthToken } from './services/spotify/spotify-auth-service.js';
-import { Bulb, getRooms, setRoom } from './services/wiz/lights-service.js';
+import { getRooms, setRoom } from './services/wiz/lights-service.js';
 import { createContainer } from './utils/inversify-orchestrator.js';
 import { TYPES } from './utils/types.js';
 
@@ -65,6 +66,10 @@ app.get('/api/dance-to-spotify', async (req, res) => {
   if (!cacheManager.get('isAuthenticated')) {
     res.redirect('/api/login');
   } else {
+    /*
+      This prevents the app from taking no more than one dance request per session.
+      It is done to avoid making multiple same requests to Spotify and to the light bulbs.
+    */
     const instance = cacheManager.get('instance');
     if (instance === 'running') {
       res.send('Already running!!!');
