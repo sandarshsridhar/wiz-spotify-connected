@@ -1,4 +1,3 @@
-import { plainToInstance } from 'class-transformer';
 import NodeCache from 'node-cache';
 import { EventEmitter } from 'node:events';
 import { container } from '../../app.js';
@@ -19,8 +18,8 @@ export const emitDanceToSpotifyEvent = async (roomIds: Array<string>): Promise<v
 
   while (true) {
     if (currentlyPlaying) {
-      const song = plainToInstance(CurrentlyPlaying, JSON.parse(currentlyPlaying));
-      const analysis = plainToInstance(AudioAnalysis, JSON.parse(await getAudioAnalysis(song.id)));
+      const song = currentlyPlaying;
+      const analysis = await getAudioAnalysis(song.id);
       const beatsMap = getBeatsMap(analysis, song.id);
 
       if (song.isPlaying) {
@@ -39,10 +38,9 @@ export const emitDanceToSpotifyEvent = async (roomIds: Array<string>): Promise<v
         retries < 3 ? retries++ : retries;
       }
 
-      await new Promise<void>((resolve) => setTimeout(async () => {
-        currentlyPlaying = await getCurrentlyPlayingSong();
-        resolve();
-      }, pollingDelay));
+      await new Promise<void>(r => setTimeout(r, pollingDelay));
+
+      currentlyPlaying = await getCurrentlyPlayingSong();
     } else {
       console.log('Nothing is playing currently!');
       return;
@@ -84,7 +82,7 @@ const getBeatsMap = (analysis: AudioAnalysis, id: string) => {
 
 const translateBeatsToLights = (beats: Beats) => {
   const lights = {
-    delayMs: Math.max(1000 / beats.beatsPerSec, 100) - 100, // Reduce delay to account for computation and API call latencies
+    delayMs: Math.max((1000 / beats.beatsPerSec) - 100, 100), // Reduce delay to account for computation and API call latencies
     colorSpace: getColorSpace(beats.key),
     brightness: Math.max(10, Math.round(beats.relativeLoudness))
   };
