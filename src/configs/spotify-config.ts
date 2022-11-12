@@ -1,3 +1,7 @@
+import * as dotenv from 'dotenv';
+
+dotenv.config();
+
 export const authConfig = {
   clientId: process.env.SPOTIFY_CLIENT_ID || 'DEFAULT_CLIENT_ID',
   clientSecret: process.env.SPOTIFY_CLIENT_SECRET || 'DEFAULT_CLIENT_SECRET',

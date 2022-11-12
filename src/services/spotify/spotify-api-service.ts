@@ -1,6 +1,6 @@
 import { Got } from 'got';
 import NodeCache from 'node-cache';
-import { container } from '../../../app.js';
+import { container } from '../../app.js';
 import { apiConfig } from '../../configs/spotify-config.js';
 import { TYPES } from '../../utils/types.js';
 import { getAuthToken } from './spotify-auth-service.js';

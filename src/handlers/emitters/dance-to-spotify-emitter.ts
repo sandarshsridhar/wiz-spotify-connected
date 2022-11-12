@@ -1,7 +1,7 @@
 import { plainToInstance } from 'class-transformer';
 import NodeCache from 'node-cache';
 import { EventEmitter } from 'node:events';
-import { container } from '../../../app.js';
+import { container } from '../../app.js';
 import { AudioAnalysis, Ran } from '../../classes/audio-analysis.js';
 import { CurrentlyPlaying } from '../../classes/currently-playing.js';
 import { apiConfig } from '../../configs/spotify-config.js';
@@ -72,7 +72,7 @@ const getBeatsMap = (analysis: AudioAnalysis, id: string) => {
   analysis.sections.forEach(s => {
     beatsMap.push({
       start: s.start,
-      end: s.end,
+      end: s.start + s.duration,
       beats: {
         beatsPerSec: s.tempo / 60,
         relativeLoudness: (100 + s.loudness) * highestRelativeLoudness / 100,

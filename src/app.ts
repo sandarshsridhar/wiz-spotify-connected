@@ -1,14 +1,14 @@
 import express, { Express, Request, Response } from 'express';
 import NodeCache from 'node-cache';
 import queryString from 'query-string';
-import { appConfig } from './src/configs/app-config.js';
-import { authConfig } from './src/configs/spotify-config.js';
-import { emitDanceToSpotifyEvent } from './src/handlers/emitters/dance-to-spotify-emitter.js';
-import { listenToDanceToSpotifyEvent } from './src/handlers/listeners/dance-to-spotify-listener.js';
-import { getAuthToken } from './src/services/spotify/spotify-auth-service.js';
-import { Bulb, getRooms, setRoom } from './src/services/wiz/lights-service.js';
-import { createContainer } from './src/utils/inversify-orchestrator.js';
-import { TYPES } from './src/utils/types.js';
+import { appConfig } from './configs/app-config.js';
+import { authConfig } from './configs/spotify-config.js';
+import { emitDanceToSpotifyEvent } from './handlers/emitters/dance-to-spotify-emitter.js';
+import { listenToDanceToSpotifyEvent } from './handlers/listeners/dance-to-spotify-listener.js';
+import { getAuthToken } from './services/spotify/spotify-auth-service.js';
+import { Bulb, getRooms, setRoom } from './services/wiz/lights-service.js';
+import { createContainer } from './utils/inversify-orchestrator.js';
+import { TYPES } from './utils/types.js';
 
 export const container = createContainer();
 
@@ -63,7 +63,7 @@ app.post('/api/rooms/:roomId', async (req: Request, res: Response) => {
 
 app.get('/api/dance-to-spotify', async (req, res) => {
   if (!cacheManager.get('isAuthenticated')) {
-    res.redirect('../login');
+    res.redirect('/api/login');
   } else {
     const instance = cacheManager.get('instance');
     if (instance === 'running') {

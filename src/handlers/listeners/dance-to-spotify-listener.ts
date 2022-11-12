@@ -1,5 +1,5 @@
 import { EventEmitter } from 'node:events';
-import { container } from '../../../app.js';
+import { container } from '../../app.js';
 import { Bulb, setRoom } from '../../services/wiz/lights-service.js';
 import { ColorSpace } from '../../utils/color-picker.js';
 import { TYPES } from '../../utils/types.js';

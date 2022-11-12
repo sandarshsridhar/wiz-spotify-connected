@@ -1,6 +1,6 @@
 import NodeCache from 'node-cache';
 import { Socket } from 'node:dgram';
-import { container } from '../../../app.js';
+import { container } from '../../app.js';
 import { wizConfig } from '../../configs/wiz-config.js';
 import { calculateColors, Color, ColorSpace } from '../../utils/color-picker.js';
 import { TYPES } from '../../utils/types.js';

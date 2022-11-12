@@ -1,4 +1,4 @@
-import { Expose, Transform } from 'class-transformer';
+import { Expose } from 'class-transformer';
 
 export type Ran<T extends number> = number extends T ? number : _Range<T, []>;
 type _Range<T extends number, R extends unknown[]> = R['length'] extends T ? R[number] : _Range<T, [R['length'], ...R]>;
@@ -13,8 +13,7 @@ class Section {
   start: number;
 
   @Expose()
-  @Transform(({ obj }) => obj.start + obj.duration)
-  end: number;
+  duration: number;
 
   @Expose()
   loudness: number;
