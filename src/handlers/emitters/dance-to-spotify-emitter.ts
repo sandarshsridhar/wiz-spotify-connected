@@ -2,18 +2,13 @@ import { plainToInstance } from 'class-transformer';
 import NodeCache from 'node-cache';
 import { EventEmitter } from 'node:events';
 import { container } from '../../app.js';
-import { AudioAnalysis, Ran } from '../../classes/audio-analysis.js';
+import { AudioAnalysis } from '../../classes/audio-analysis.js';
 import { CurrentlyPlaying } from '../../classes/currently-playing.js';
+import { Beats } from '../../classes/type-definitions.js';
 import { apiConfig } from '../../configs/spotify-config.js';
 import { getAudioAnalysis, getCurrentlyPlayingSong } from '../../services/spotify/spotify-api-service.js';
 import { getColorSpace } from '../../utils/color-picker.js';
 import { TYPES } from '../../utils/types.js';
-
-type Beats = {
-  beatsPerSec: number;
-  relativeLoudness: number;
-  key: Ran<12>;
-};
 
 export const emitDanceToSpotifyEvent = async (roomIds: Array<string>): Promise<void> => {
   const eventBus = container.get<EventEmitter>(TYPES.EventBus);
@@ -44,9 +39,10 @@ export const emitDanceToSpotifyEvent = async (roomIds: Array<string>): Promise<v
         retries < 3 ? retries++ : retries;
       }
 
-      await new Promise(r => setTimeout(r, pollingDelay));
-
-      setImmediate(async () => currentlyPlaying = await getCurrentlyPlayingSong());
+      await new Promise<void>((resolve) => setTimeout(async () => {
+        currentlyPlaying = await getCurrentlyPlayingSong();
+        resolve();
+      }, pollingDelay));
     } else {
       console.log('Nothing is playing currently!');
       return;
@@ -88,7 +84,7 @@ const getBeatsMap = (analysis: AudioAnalysis, id: string) => {
 
 const translateBeatsToLights = (beats: Beats) => {
   const lights = {
-    delayMs: 1000 / beats.beatsPerSec,
+    delayMs: Math.max(1000 / beats.beatsPerSec, 100) - 100, // Reduce delay to account for computation and API call latencies
     colorSpace: getColorSpace(beats.key),
     brightness: Math.max(10, Math.round(beats.relativeLoudness))
   };

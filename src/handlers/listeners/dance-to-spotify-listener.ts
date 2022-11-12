@@ -1,14 +1,8 @@
 import { EventEmitter } from 'node:events';
 import { container } from '../../app.js';
-import { Bulb, setRoom } from '../../services/wiz/lights-service.js';
-import { ColorSpace } from '../../utils/color-picker.js';
+import { Bulb, ColorSpace } from '../../classes/type-definitions.js';
+import { setRoom } from '../../services/wiz/lights-service.js';
 import { TYPES } from '../../utils/types.js';
-
-export type Lights = {
-  delayMs: number;
-  colorSpace: ColorSpace,
-  brightness: number;
-}
 
 export const listenToDanceToSpotifyEvent = async () => {
   const eventBus = container.get<EventEmitter>(TYPES.EventBus);

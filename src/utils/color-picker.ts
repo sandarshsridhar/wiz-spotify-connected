@@ -1,20 +1,4 @@
-import { Ran } from '../classes/audio-analysis.js';
-
-export enum ColorSpace {
-  'purple',
-  'pink',
-  'red',
-  'orange',
-  'yellow',
-  'green',
-  'blue'
-}
-
-export type Color = {
-  red: number;
-  green: number;
-  blue: number;
-}
+import { Color, ColorSpace, Ran } from '../classes/type-definitions.js';
 
 const colorPicker = {
   purple: [
@@ -319,14 +303,9 @@ export const calculateColors = (colorSpace: ColorSpace, times: number): Array<Co
     [ColorSpace.purple]: colorPicker.purple,
     [ColorSpace.pink]: colorPicker.pink,
     [ColorSpace.red]: colorPicker.red,
-    [ColorSpace.red]: colorPicker.red,
-    [ColorSpace.orange]: colorPicker.orange,
     [ColorSpace.orange]: colorPicker.orange,
     [ColorSpace.yellow]: colorPicker.yellow,
     [ColorSpace.green]: colorPicker.green,
-    [ColorSpace.green]: colorPicker.green,
-    [ColorSpace.green]: colorPicker.green,
-    [ColorSpace.blue]: colorPicker.blue,
     [ColorSpace.blue]: colorPicker.blue
   };
 

@@ -1,22 +1,10 @@
 import NodeCache from 'node-cache';
 import { Socket } from 'node:dgram';
 import { container } from '../../app.js';
+import { Bulb, Color, ColorSpace } from '../../classes/type-definitions.js';
 import { wizConfig } from '../../configs/wiz-config.js';
-import { calculateColors, Color, ColorSpace } from '../../utils/color-picker.js';
+import { calculateColors } from '../../utils/color-picker.js';
 import { TYPES } from '../../utils/types.js';
-
-export type Bulb = {
-  state: boolean,
-  color?: {
-    red: number,
-    green: number,
-    blue: number,
-  },
-  coldWhite?: number,
-  warmWhite?: number,
-  brightness?: number,
-  temp?: number
-}
 
 export const getRooms = async (): Promise<Record<string, any>> => {
   const socket = container.get<Socket>(TYPES.Socket);
