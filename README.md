@@ -64,7 +64,7 @@ A service to sync your [Philips Wiz lights](https://www.wizconnected.com/) to pl
                 "10.0.0.6",
                 "929e242d0e53"
             ]
-        ]
+         ]
       }
     ```
 
