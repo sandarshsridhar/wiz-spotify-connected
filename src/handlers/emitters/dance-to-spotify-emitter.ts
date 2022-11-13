@@ -11,10 +11,11 @@ import { TYPES } from '../../utils/types.js';
 
 export const emitDanceToSpotifyEvent = async (roomIds: Array<string>): Promise<void> => {
   const eventBus = container.get<EventEmitter>(TYPES.EventBus);
+  const retryLimit = 3;
   let pollingDelay = apiConfig.pollingDelayMs;
   let retries = 0;
   let currentlyPlaying = await getCurrentlyPlayingSong();
-  let alternateBrightness = true;
+  let alternateBrightness = true; // This makes the effect pop more.
 
   while (true) {
     if (currentlyPlaying) {
@@ -35,7 +36,7 @@ export const emitDanceToSpotifyEvent = async (roomIds: Array<string>): Promise<v
       } else {
         pollingDelay = Math.pow(2, retries) * 1000;
         console.log(`Playback paused: ${song.id}. Waiting ${pollingDelay / 1000} seconds...`);
-        retries < 3 ? retries++ : retries;
+        retries < retryLimit ? retries++ : retries;
       }
 
       await new Promise<void>(r => setTimeout(r, pollingDelay));

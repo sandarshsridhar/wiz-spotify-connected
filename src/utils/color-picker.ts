@@ -281,18 +281,18 @@ const colorPicker = {
 
 export const getColorSpace = (key: Ran<12>) => {
   const map = {
-    0: ColorSpace.purple,
-    1: ColorSpace.pink,
-    2: ColorSpace.red,
-    3: ColorSpace.red,
-    4: ColorSpace.orange,
-    5: ColorSpace.orange,
-    6: ColorSpace.yellow,
+    0: ColorSpace.red,
+    1: ColorSpace.red,
+    2: ColorSpace.orange,
+    3: ColorSpace.orange,
+    4: ColorSpace.yellow,
+    5: ColorSpace.yellow,
+    6: ColorSpace.green,
     7: ColorSpace.green,
-    8: ColorSpace.green,
-    9: ColorSpace.green,
-    10: ColorSpace.blue,
-    11: ColorSpace.blue
+    8: ColorSpace.blue,
+    9: ColorSpace.blue,
+    10: ColorSpace.purple,
+    11: ColorSpace.pink
   };
 
   return map[key];
