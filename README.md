@@ -65,7 +65,7 @@ A service to sync your [Philips Wiz lights](https://www.wizconnected.com/) to pl
                 "929e242d0e53"
             ]
         ]
-    }
+      }
     ```
 
    * From the above example, you can easily determine your roomId from the number of objects in each roomId.
