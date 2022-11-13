@@ -8,16 +8,18 @@ import { apiConfig } from '../../configs/spotify-config.js';
 import { TYPES } from '../../utils/types.js';
 import { getAuthToken } from './spotify-auth-service.js';
 
-export const getCurrentlyPlayingSong = async (): Promise<CurrentlyPlaying | null> => {
+export const getCurrentlyPlayingSong = async (retryCount = 0): Promise<CurrentlyPlaying | null> => {
   let result = await get('me/player');
+  const retryLimit = 5;
 
   if (result.body) {
     const currentlyPlaying = JSON.parse(result.body);
 
+    // Below lines of code is to account for Spotify returning empty item (track) some times. A retry should work.
     if (currentlyPlaying.item) {
       return plainToInstance(CurrentlyPlaying, currentlyPlaying);
     } else {
-      return await getCurrentlyPlayingSong();
+      if (retryCount++ < retryLimit) return await getCurrentlyPlayingSong(retryCount);
     }
   }
 

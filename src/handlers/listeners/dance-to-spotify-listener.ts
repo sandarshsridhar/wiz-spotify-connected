@@ -13,9 +13,7 @@ export const listenToDanceToSpotifyEvent = async () => {
       brightness
     };
 
-    const promises: Array<Promise<void>> = [];
-
-    roomIds.forEach(roomId => promises.push(setRoom(roomId, bulb, colorSpace)));
+    const promises = roomIds.map(roomId => setRoom(roomId, bulb, colorSpace));
 
     await Promise.all(promises);
   });

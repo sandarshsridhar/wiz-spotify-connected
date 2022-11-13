@@ -60,7 +60,7 @@ export const setRoom = async (roomId: string, config: Bulb, colorSpace?: ColorSp
           config.color = colors[index];
           message = buildStandardBulbMessage(config);
         }
-        sendMessage(message, socket, bulb[0], 3);
+        sendMessage(message, socket, bulb[0]);
       });
     });
 
@@ -96,17 +96,21 @@ const buildStandardBulbMessage = (config: Bulb) => {
   });
 };
 
-const sendMessage = (message: string, socket: Socket, ip: string, maxTries: number, delay?: number) => {
-  let counter = 1;
-  const interval = setInterval(() => {
-    if (counter > maxTries) {
-      clearInterval(interval);
-      return;
-    }
+const sendMessage = (message: string, socket: Socket, ip: string, maxTries?: number, delay?: number) => {
+  if (!maxTries) {
+    setImmediate(() => socket.send(message, wizConfig.wizListenerPort, ip));
+  } else {
+    let counter = 1;
+    const interval = setInterval(() => {
+      if (counter > maxTries) {
+        clearInterval(interval);
+        return;
+      }
 
-    socket.send(message, wizConfig.wizListenerPort, ip);
-    counter++;
-  }, delay);
+      socket.send(message, wizConfig.wizListenerPort, ip);
+      counter++;
+    }, delay);
+  }
 };
 
 const buildRoomData = (rawData: Map<string, Map<string, string>>) => {
