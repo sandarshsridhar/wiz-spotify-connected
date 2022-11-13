@@ -18,7 +18,7 @@ const state = 'spotify-wiz-connected';
 const scope = 'user-read-currently-playing user-read-playback-state';
 const cacheManager = container.get<NodeCache>(TYPES.CacheManager);
 
-app.get('/api/login', (_req: Request, res: Response) => {
+app.get('/login', (_req: Request, res: Response) => {
   const qString = queryString.stringify({
     response_type: 'code',
     client_id: authConfig.clientId,
@@ -30,7 +30,7 @@ app.get('/api/login', (_req: Request, res: Response) => {
   res.redirect(`${authConfig.authUrl}?${qString}`);
 });
 
-app.get('/api/callback', async (req: Request, res: Response) => {
+app.get('/callback', async (req: Request, res: Response) => {
   if (req.query.state !== state) {
     res.send('State does not match!');
   } else {
@@ -40,11 +40,11 @@ app.get('/api/callback', async (req: Request, res: Response) => {
   }
 });
 
-app.get('/api/rooms', async (_req: Request, res: Response) => {
+app.get('/rooms', async (_req: Request, res: Response) => {
   res.header('Content-type', 'application/json').send(cacheManager.get('rooms'));
 });
 
-app.post('/api/rooms/:roomId', async (req: Request, res: Response) => {
+app.post('/rooms/:roomId', async (req: Request, res: Response) => {
   const config: Bulb = {
     state: req.query.state === 'true',
     color: {
@@ -62,9 +62,9 @@ app.post('/api/rooms/:roomId', async (req: Request, res: Response) => {
   res.header('Content-type', 'application/json').send(JSON.stringify(config));
 });
 
-app.get('/api/dance-to-spotify', async (req, res) => {
+app.get('/dance-to-spotify', async (req, res) => {
   if (!cacheManager.get('isAuthenticated')) {
-    res.redirect('/api/login');
+    res.redirect('/login');
   } else {
     /*
       This prevents the app from taking no more than one dance request per session.
@@ -95,5 +95,5 @@ app.get('/api/dance-to-spotify', async (req, res) => {
 
 app.listen(appConfig.port, async () => {
   cacheManager.set('rooms', await getRooms());
-  console.log(`⚡️[server]: Server is running at https://localhost:${appConfig.port}`);
+  console.log(`⚡️[server]: Server is running at http://localhost:${appConfig.port}`);
 });
