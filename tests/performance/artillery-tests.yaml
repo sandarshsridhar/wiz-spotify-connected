@@ -1,5 +1,5 @@
 config:
-  target: "http://localhost:1251/api/rooms/6970941"
+  target: "http://localhost:8888/rooms/6970941"
   phases:
     - duration: 60
       arrivalRate: 3
