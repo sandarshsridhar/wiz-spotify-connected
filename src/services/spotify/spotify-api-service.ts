@@ -19,7 +19,7 @@ export const getCurrentlyPlayingSong = async (retryCount = 0): Promise<Currently
     if (currentlyPlaying.item) {
       return plainToInstance(CurrentlyPlaying, currentlyPlaying);
     } else {
-      if (retryCount++ < retryLimit) return await getCurrentlyPlayingSong(retryCount);
+      if (retryCount++ < retryLimit) return getCurrentlyPlayingSong(retryCount);
     }
   }
 

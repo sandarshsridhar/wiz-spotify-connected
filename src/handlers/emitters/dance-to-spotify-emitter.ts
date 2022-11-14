@@ -12,7 +12,6 @@ import { TYPES } from '../../utils/types.js';
 export const emitDanceToSpotifyEvent = async (roomIds: Array<string>): Promise<void> => {
   const eventBus = container.get<EventEmitter>(TYPES.EventBus);
   const retryLimit = 3;
-  let pollingDelay = apiConfig.pollingDelayMs;
   let retries = 0;
   let currentlyPlaying = await getCurrentlyPlayingSong();
   let alternateBrightness = true; // This makes the effect pop more.
@@ -30,22 +29,30 @@ export const emitDanceToSpotifyEvent = async (roomIds: Array<string>): Promise<v
         const lights = translateBeatsToLights(beats);
 
         eventBus.emit('changeLights', roomIds, alternateBrightness ? lights.brightness : 10, lights.colorSpace);
-        pollingDelay = lights.delayMs;
+
+        await sleep(lights.delayMs);
+
         alternateBrightness = !alternateBrightness;
       } else {
-        pollingDelay = Math.pow(2, retries) * 1000;
-        console.log(`Playback paused: ${song.id}. Waiting ${pollingDelay / 1000} seconds...`);
+        const waitMs = Math.pow(2, retries) * 1000;
+
+        console.log(`Playback paused: ${song.id}. Waiting ${waitMs / 1000} seconds...`);
+
+        await sleep(waitMs);
+
         retries < retryLimit ? retries++ : retries;
       }
 
-      await new Promise<void>(r => setTimeout(r, pollingDelay));
-
-      currentlyPlaying = await getCurrentlyPlayingSong();
+      setTimeout(async () => currentlyPlaying = await getCurrentlyPlayingSong(), apiConfig.pollingDelayMs);
     } else {
       console.log('Nothing is playing currently!');
       return;
     }
   }
+};
+
+const sleep = async (timeMs: number) => {
+  return new Promise<void>((r) => setTimeout(r, timeMs));
 };
 
 const getBeats = (beatsMap: Array<{ start: number, end: number, beats: Beats }>, cpSong: CurrentlyPlaying): Beats => {
@@ -82,7 +89,7 @@ const getBeatsMap = (analysis: AudioAnalysis, id: string) => {
 
 const translateBeatsToLights = (beats: Beats) => {
   const lights = {
-    delayMs: Math.max((1000 / beats.beatsPerSec) - 100, 100), // Reduce delay to account for computation and API call latencies
+    delayMs: 1000 / beats.beatsPerSec,
     colorSpace: getColorSpace(beats.key),
     brightness: Math.max(10, Math.round(beats.relativeLoudness))
   };
