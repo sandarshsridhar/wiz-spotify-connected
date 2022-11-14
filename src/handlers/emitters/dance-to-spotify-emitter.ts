@@ -24,7 +24,6 @@ export const emitDanceToSpotifyEvent = async (roomIds: Array<string>): Promise<v
       const beatsMap = getBeatsMap(analysis, song.id);
 
       if (song.isPlaying) {
-        pollingDelay = apiConfig.pollingDelayMs;
         retries = 0;
 
         const beats = getBeats(beatsMap, song);
