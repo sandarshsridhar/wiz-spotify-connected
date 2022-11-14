@@ -11,6 +11,7 @@ export const createContainer = (enableDebugMode = false): Container => {
   const container = new Container();
 
   container.bind<NodeCache>(TYPES.CacheManager).toConstantValue(new NodeCache({
+    stdTTL: 24 * 60 * 60,
     deleteOnExpire: true
   }));
   container.bind<Got>(TYPES.HttpClient).toConstantValue(createHttpClient(enableDebugMode));
