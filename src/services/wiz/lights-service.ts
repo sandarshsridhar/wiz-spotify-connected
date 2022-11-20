@@ -1,10 +1,10 @@
 import NodeCache from 'node-cache';
 import { Socket } from 'node:dgram';
 import { nextTick } from 'process';
-import { container } from '../../app.js';
 import { Bulb, Color, ColorSpace } from '../../classes/type-definitions.js';
 import { wizConfig } from '../../configs/wiz-config.js';
 import { calculateColors } from '../../utils/color-picker.js';
+import { container } from '../../utils/inversify-orchestrator.js';
 import { TYPES } from '../../utils/types.js';
 
 export const getRooms = async (): Promise<Record<string, any>> => {

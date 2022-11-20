@@ -1,10 +1,10 @@
 import { plainToInstance } from 'class-transformer';
 import { Got } from 'got';
 import NodeCache from 'node-cache';
-import { container } from '../../app.js';
 import { AudioAnalysis } from '../../classes/audio-analysis.js';
 import { CurrentlyPlaying } from '../../classes/currently-playing.js';
 import { apiConfig } from '../../configs/spotify-config.js';
+import { container } from '../../utils/inversify-orchestrator.js';
 import { TYPES } from '../../utils/types.js';
 import { getAuthToken } from './spotify-auth-service.js';
 

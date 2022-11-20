@@ -1,12 +1,12 @@
 import NodeCache from 'node-cache';
 import { EventEmitter } from 'node:events';
-import { container } from '../../app.js';
 import { AudioAnalysis } from '../../classes/audio-analysis.js';
 import { CurrentlyPlaying } from '../../classes/currently-playing.js';
 import { Beats } from '../../classes/type-definitions.js';
 import { apiConfig } from '../../configs/spotify-config.js';
 import { getAudioAnalysis, getCurrentlyPlayingSong } from '../../services/spotify/spotify-api-service.js';
 import { getColorSpace } from '../../utils/color-picker.js';
+import { container } from '../../utils/inversify-orchestrator.js';
 import { TYPES } from '../../utils/types.js';
 
 export const emitDanceToSpotifyEvent = async (roomIds: Array<string>): Promise<void> => {
