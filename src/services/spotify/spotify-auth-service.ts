@@ -1,8 +1,8 @@
 import { Got, OptionsOfTextResponseBody } from 'got';
 import NodeCache from 'node-cache';
-import { container } from '../../app.js';
 import { appConfig } from '../../configs/app-config.js';
 import { authConfig } from '../../configs/spotify-config.js';
+import { container } from '../../utils/inversify-orchestrator.js';
 import { TYPES } from '../../utils/types.js';
 
 export const getAuthToken = async (code?: string) => {

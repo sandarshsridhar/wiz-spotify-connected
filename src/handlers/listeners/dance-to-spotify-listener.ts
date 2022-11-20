@@ -1,7 +1,7 @@
 import { EventEmitter } from 'node:events';
-import { container } from '../../app.js';
 import { Bulb, ColorSpace } from '../../classes/type-definitions.js';
 import { setRoom } from '../../services/wiz/lights-service.js';
+import { container } from '../../utils/inversify-orchestrator.js';
 import { TYPES } from '../../utils/types.js';
 
 export const listenToDanceToSpotifyEvent = async () => {

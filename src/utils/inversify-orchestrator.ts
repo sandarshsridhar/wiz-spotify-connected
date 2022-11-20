@@ -7,7 +7,7 @@ import { EventEmitter } from 'node:events';
 import { createHttpClient } from './http-client.js';
 import { TYPES } from './types.js';
 
-export const createContainer = (enableDebugMode = false): Container => {
+const createContainer = (enableDebugMode = false): Container => {
   const container = new Container();
 
   container.bind<NodeCache>(TYPES.CacheManager).toConstantValue(new NodeCache({
@@ -20,3 +20,5 @@ export const createContainer = (enableDebugMode = false): Container => {
 
   return container;
 };
+
+export const container = createContainer();
