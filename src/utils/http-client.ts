@@ -1,13 +1,14 @@
 import { got } from 'got';
 import { Agent as HttpsAgent } from 'https';
 import { gotConfig } from '../configs/got-config.js';
+import { Logger } from './logger.js';
 
 const options = {
   keepAlive: true,
   timeout: (60 * 1000) - 5000
 };
 
-export const createHttpClient = (debug = false) => {
+export const createHttpClient = (logger: Logger) => {
   return got.extend({
     agent: {
       https: new HttpsAgent(options)
@@ -23,25 +24,21 @@ export const createHttpClient = (debug = false) => {
     hooks: {
       beforeRequest: [
         (request) => {
-          if (debug)
-            console.info(`Request to: ${request.url}`, {
-              jsonBody: request.json,
-              body: request.body,
-              headers: request.headers
-            });
+          logger.debug(`Request to: ${request.url}`, {
+            jsonBody: request.json,
+            body: request.body,
+            headers: request.headers
+          });
         }
       ],
 
       afterResponse: [
         (response) => {
-          if (debug)
-            console.info(`Response from: ${response.requestUrl}`, {
-              statusCode: response.statusCode,
-              body: response.body,
-              retryCount: response.retryCount,
-              timings: response.timings.phases.total,
-              socket: `${response?.request?.socket?.localAddress}:${response?.request?.socket?.localPort}`
-            });
+          logger.debug(`Response from: ${response.requestUrl}`, {
+            statusCode: response.statusCode,
+            body: response.body,
+            retryCount: response.retryCount
+          });
 
           return response;
         }

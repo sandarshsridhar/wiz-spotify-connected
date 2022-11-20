@@ -5,6 +5,10 @@ export class CurrentlyPlaying {
   @Transform(({ obj }) => obj.item.id)
   id: string;
 
+  @Expose()
+  @Transform(({ obj }) => obj.item.name)
+  name: string;
+
   @Expose({ name: 'is_playing' })
   isPlaying: boolean;
 

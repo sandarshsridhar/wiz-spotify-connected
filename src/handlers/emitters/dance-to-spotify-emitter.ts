@@ -7,14 +7,18 @@ import { apiConfig } from '../../configs/spotify-config.js';
 import { getAudioAnalysis, getCurrentlyPlayingSong } from '../../services/spotify/spotify-api-service.js';
 import { getColorSpace } from '../../utils/color-picker.js';
 import { container } from '../../utils/inversify-orchestrator.js';
+import { Logger } from '../../utils/logger.js';
 import { TYPES } from '../../utils/types.js';
 
 export const emitDanceToSpotifyEvent = async (roomIds: Array<string>): Promise<void> => {
   const eventBus = container.get<EventEmitter>(TYPES.EventBus);
+  const logger = container.get<Logger>(TYPES.Logger);
+
   const retryLimit = 3;
   let retries = 0;
   let currentlyPlaying = await getCurrentlyPlayingSong();
   let alternateBrightness = true; // This makes the effect pop more.
+  let timer = process.hrtime();
 
   while (true) {
     if (currentlyPlaying) {
@@ -23,6 +27,8 @@ export const emitDanceToSpotifyEvent = async (roomIds: Array<string>): Promise<v
       const beatsMap = getBeatsMap(analysis, song.id);
 
       if (song.isPlaying) {
+        logger.debug(`Playing: ${song.name}`);
+
         retries = 0;
 
         const beats = getBeats(beatsMap, song);
@@ -36,19 +42,30 @@ export const emitDanceToSpotifyEvent = async (roomIds: Array<string>): Promise<v
       } else {
         const waitMs = Math.pow(2, retries) * 1000;
 
-        console.log(`Playback paused: ${song.id}. Waiting ${waitMs / 1000} seconds...`);
+        logger.debug(`Playback paused: ${song.name}. Waiting ${waitMs / 1000} seconds...`);
 
         await sleep(waitMs);
 
         retries < retryLimit ? retries++ : retries;
       }
 
-      setTimeout(async () => currentlyPlaying = await getCurrentlyPlayingSong(), apiConfig.pollingDelayMs);
+      setImmediate(async () => {
+        if (isLaterThanPollingDelay(timer)) {
+          currentlyPlaying = await getCurrentlyPlayingSong();
+          timer = process.hrtime();
+        }
+      });
     } else {
-      console.log('Nothing is playing currently!');
+      logger.warn('Nothing is playing currently!');
       return;
     }
   }
+};
+
+const isLaterThanPollingDelay = (timer: [number, number]) => {
+  const elapsedTimeMs = (process.hrtime(timer)[0] * 1000000000 + process.hrtime(timer)[1]) / 1000000;
+
+  return elapsedTimeMs > apiConfig.pollingDelayMs;
 };
 
 const sleep = async (timeMs: number) => {

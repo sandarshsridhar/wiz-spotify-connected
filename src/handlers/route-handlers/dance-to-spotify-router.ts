@@ -1,14 +1,16 @@
 import express, { NextFunction, Request, Response } from 'express';
 import NodeCache from 'node-cache';
 import { container } from '../../utils/inversify-orchestrator.js';
+import { Logger } from '../../utils/logger.js';
 import { TYPES } from '../../utils/types.js';
 import { emitDanceToSpotifyEvent } from '../emitters/dance-to-spotify-emitter.js';
 import { listenToDanceToSpotifyEvent } from '../listeners/dance-to-spotify-listener.js';
 
 const danceToSpotifyRouter = express.Router();
 const cacheManager = container.get<NodeCache>(TYPES.CacheManager);
+const logger = container.get<Logger>(TYPES.Logger);
 
-danceToSpotifyRouter.get('/dance-to-spotify', async (req: Request, res: Response, next: NextFunction) => {
+danceToSpotifyRouter.get('/dance-to-spotify', async (_req: Request, res: Response, next: NextFunction) => {
   try {
     if (!cacheManager.get('isAuthenticated')) {
       res.redirect('/login');
@@ -16,11 +18,12 @@ danceToSpotifyRouter.get('/dance-to-spotify', async (req: Request, res: Response
       next();
     }
   } catch (err: any) {
-    res.send(`Error occurred: ${err.message}`);
+    res.status(500).send('Error occurred');
+    logger.error('Error occurred', err.message);
   }
 });
 
-danceToSpotifyRouter.get('/dance-to-spotify', async (req: Request, res: Response, next: NextFunction) => {
+danceToSpotifyRouter.get('/dance-to-spotify', async (_req: Request, res: Response, next: NextFunction) => {
   try {
     /*
         This prevents the app from taking no more than one dance request per session.
@@ -28,23 +31,24 @@ danceToSpotifyRouter.get('/dance-to-spotify', async (req: Request, res: Response
      */
     const instance = cacheManager.get('instance');
     if (instance === 'running') {
-      res.send('Already running!!!');
+      res.status(200).send('Already running!!!');
     } else {
       next();
     }
   } catch (err: any) {
     cacheManager.set('instance', 'stopped');
-    res.send(`Error occurred: ${err.message}`);
+    res.status(500).send('Error occurred');
+    logger.error('Error occurred', err.message);
   }
 });
 
-danceToSpotifyRouter.get('/dance-to-spotify', async (req: Request, res: Response, next: NextFunction) => {
+danceToSpotifyRouter.get('/dance-to-spotify', async (_req: Request, res: Response, next: NextFunction) => {
   cacheManager.set('instance', 'running');
-  res.send('Started Spotify Sync...');
+  res.status(200).send('Started Spotify Sync...');
   next();
 });
 
-danceToSpotifyRouter.get('/dance-to-spotify', async (req: Request, res: Response) => {
+danceToSpotifyRouter.get('/dance-to-spotify', async (req: Request) => {
   try {
     let roomIds = [];
     if (req.query.roomIds) {
@@ -57,11 +61,9 @@ danceToSpotifyRouter.get('/dance-to-spotify', async (req: Request, res: Response
     await emitDanceToSpotifyEvent(roomIds);
 
     cacheManager.set('instance', 'stopped');
-
-    res.send('Nothing is playing currently!');
   } catch (err: any) {
     cacheManager.set('instance', 'stopped');
-    res.send(`Error occurred: ${err.message}`);
+    logger.error('Error Occurred', err.message);
   }
 });
 
