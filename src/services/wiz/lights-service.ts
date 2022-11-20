@@ -1,5 +1,6 @@
 import NodeCache from 'node-cache';
 import { Socket } from 'node:dgram';
+import { nextTick } from 'process';
 import { container } from '../../app.js';
 import { Bulb, Color, ColorSpace } from '../../classes/type-definitions.js';
 import { wizConfig } from '../../configs/wiz-config.js';
@@ -98,7 +99,7 @@ const buildStandardBulbMessage = (config: Bulb) => {
 
 const sendMessage = (message: string, socket: Socket, ip: string, maxTries?: number, delay?: number) => {
   if (!maxTries) {
-    setImmediate(() => socket.send(message, wizConfig.wizListenerPort, ip));
+    nextTick(() => socket.send(message, wizConfig.wizListenerPort, ip));
   } else {
     let counter = 1;
     const interval = setInterval(() => {
