@@ -70,7 +70,7 @@ A service to sync your [Philips Wiz lights](https://www.wizconnected.com/) to pl
 
    * From the above example, you can easily determine your roomId from the number of objects in each roomId.
 
-   * If your setup is a bit more complicated where you have similar number of bulbs in multiple rooms, you can simple go with trial and error method to determine the roomIds or you can check the mac addresses in your router's admin panel.
+   * If your setup is a bit more complicated where you have similar number of bulbs in multiple rooms, you can simply go with trial and error method to determine the roomIds or you can check the mac addresses in your router's admin panel to determine the room they are in.
 
 8. Now go to "[http://localhost:{YOUR_PORT}/dance-to-spotify](http://localhost:%7BYOUR_PORT%7D/dance-to-spotify)" or "[http://localhost:{YOUR_PORT}/dance-to-spotify?roomIds={roomId1},{roomId2](http://localhost:%7BYOUR_PORT%7D/dance-to-spotify?roomIds=%7BroomId1%7D,%7BroomId2)}..." (if you are enabling for selected rooms), and that's it.
 
