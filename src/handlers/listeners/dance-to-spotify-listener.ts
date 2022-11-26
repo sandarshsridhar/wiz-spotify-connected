@@ -15,6 +15,6 @@ export const listenToDanceToSpotifyEvent = async () => {
 
     const promises = roomIds.map(roomId => setRoom(roomId, bulb, colorSpace));
 
-    await Promise.all(promises);
+    return Promise.all(promises);
   });
 };
