@@ -10,7 +10,7 @@ import { container } from '../../utils/inversify-orchestrator.js';
 import { Logger } from '../../utils/logger.js';
 import { TYPES } from '../../utils/types.js';
 
-export const emitDanceToSpotifyEvent = async (roomIds: Array<string>): Promise<void> => {
+export const emitDanceToSpotifyEvent = async (): Promise<void> => {
   const eventBus = container.get<EventEmitter>(TYPES.EventBus);
   const logger = container.get<Logger>(TYPES.Logger);
 
@@ -34,7 +34,7 @@ export const emitDanceToSpotifyEvent = async (roomIds: Array<string>): Promise<v
         const beats = getBeats(beatsMap, song);
         const lights = translateBeatsToLights(beats);
 
-        eventBus.emit('changeLights', roomIds, alternateBrightness ? lights.brightness : 10, lights.colorSpace);
+        eventBus.emit('changeLights', alternateBrightness ? lights.brightness : 10, lights.colorSpace);
 
         await sleep(lights.delayMs);
 
@@ -63,7 +63,9 @@ export const emitDanceToSpotifyEvent = async (roomIds: Array<string>): Promise<v
 };
 
 const isLaterThanPollingDelay = (timer: [number, number]) => {
-  const elapsedTimeMs = (process.hrtime(timer)[0] * 1000000000 + process.hrtime(timer)[1]) / 1000000;
+  const billion = 1000000000;
+  const million = 1000000;
+  const elapsedTimeMs = (process.hrtime(timer)[0] * billion + process.hrtime(timer)[1]) / million;
 
   return elapsedTimeMs > apiConfig.pollingDelayMs;
 };

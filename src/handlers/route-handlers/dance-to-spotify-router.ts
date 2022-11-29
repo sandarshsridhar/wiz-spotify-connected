@@ -57,8 +57,8 @@ danceToSpotifyRouter.get('/dance-to-spotify', async (req: Request) => {
       roomIds = Object.keys(<never>cacheManager.get('rooms'));
     }
 
-    await listenToDanceToSpotifyEvent();
-    await emitDanceToSpotifyEvent(roomIds);
+    await listenToDanceToSpotifyEvent(roomIds);
+    await emitDanceToSpotifyEvent();
 
     cacheManager.set('instance', 'stopped');
   } catch (err: any) {
