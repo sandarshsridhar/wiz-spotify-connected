@@ -93,7 +93,7 @@ const getBeatsMap = (analysis: AudioAnalysis, id: string) => {
       end: s.start + s.duration,
       beats: {
         beatsPerSec: s.tempo / 60,
-        relativeLoudness: (100 + s.loudness) * highestRelativeLoudness / 100,
+        relativeLoudness: (100 + s.loudness) * 100 / highestRelativeLoudness,
         key: s.key
       }
     });
