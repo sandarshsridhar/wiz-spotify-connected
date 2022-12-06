@@ -16,8 +16,8 @@ A service to sync your [Philips Wiz lights](https://www.wizconnected.com/) to pl
 
 1. [Spotify developer account](https://developer.spotify.com/dashboard)
     * Create an app in the dashboard -> This creates your Client ID and Client Secret (You will need these when using this app).
-    * Go to **EDIT SETTINGS** -> **Redirect URIs** -> add [http://localhost:{DESIRED\_PORT}/callback](http://localhost:%7BDESIRED_PORT%7D/callback) (This is needed to get yourself authenticated when the app runs) -> hit **Save** to save your changes.
-2. You will also need to allow UDP communication with Wiz. You can do this by going to the Wiz app -> **Settings** -> **Security** -> Enable **Allow Local Communication**.
+    * Go to **EDIT SETTINGS** -> **Redirect URIs** -> add [http://localhost:8888/callback](http://localhost:8888/callback) (This is needed to get yourself authenticated when the app runs) -> hit **Save** to save your changes.
+2. You will also need to allow UDP communication with Wiz. You can do this by going to the Wiz app -> **Settings** -> **Security** -> Enable <strong>Allow Local Communication</strong>.
 3. You will need Node.js (16+) and NPM (8+) installed on your machine to run this app. If these are not installed, please install them before going to the next step.
 4. Clone this repository.
 
@@ -25,15 +25,14 @@ A service to sync your [Philips Wiz lights](https://www.wizconnected.com/) to pl
 
 1. Run `npm i` in a terminal in the root of this repo. This will install all the necessary packages.
 2. Create a **.env** file in the root of your folder and fill in the details using **sample-env** file present in the repo as a reference.
-*Note*: You may have to change the router IP range depending on what your router uses.
+    <em>Note</em>: You may have to change the router IP range depending on what your router uses.
 3. Run `npm run start`.
 4. Before the server is available to take requests, it gathers the IP and mac addresses of all the light bulbs in your home and saves them in its internal cache.
-5. Once the startup is done, You will see "⚡️[server]: Server is running at [http://localhost:{YOUR_PORT](http://localhost:%7BYOUR_PORT)}" in your console. Now, your app is ready to take requests.
-6. Open your favorite browser and type in "http://localhost:{YOUR_PORT}/login". This will get you authenticated with Spotify. You will see a pop up from Spotify asking you to authorize the request (This only happens the first time you use this app). Accept the terms and you will be redirected to "http://localhost:{YOUR_PORT}/callback".
-7. [Only applicable if you would like to enable music sync in only selected rooms, if not, move on to Step 8], you can fetch the room IDs from "[http://localhost:{YOUR_PORT}/rooms](http://localhost:%7BYOUR_PORT%7D/rooms)".
-
-   * This is the only manual piece to this app: Wiz bulbs do not record the room names or the bulb names in their local storage. Instead they have roomIds. So, you will have to determine the roomId by reading the API response.
-    Sample API response
+5. Once the startup is done, You will see "⚡️[server]: Server is running at [http://localhost:8888](http://localhost:8888)" in your console. Now, your app is ready to take requests.
+6. Open your favorite browser and type in "[http://localhost:8888/login](http://localhost:8888/login)". This will get you authenticated with Spotify. You will see a pop up from Spotify asking you to authorize the request (This only happens the first time you use this app). Accept the terms and you will be redirected to "[http://localhost:8888/callback](http://localhost:8888/callback)".
+7. [Only applicable if you would like to enable music sync in only selected rooms, if not, move on to Step 8], you can fetch the room IDs from "[http://localhost:8888/rooms](http://localhost:8888/rooms)".
+    * This is the only manual piece to this app: Wiz bulbs do not record the room names or the bulb names in their local storage. Instead they have roomIds. So, you will have to determine the roomId by reading the API response.
+        Sample API response
 
     ```json
       {
@@ -68,11 +67,9 @@ A service to sync your [Philips Wiz lights](https://www.wizconnected.com/) to pl
       }
     ```
 
-   * From the above example, you can easily determine your roomId from the number of objects in each roomId.
-
-   * If your setup is a bit more complicated where you have similar number of bulbs in multiple rooms, you can simply go with trial and error method to determine the roomIds or you can check the mac addresses in your router's admin panel to determine the room they are in.
-
-8. Now go to "[http://localhost:{YOUR_PORT}/dance-to-spotify](http://localhost:%7BYOUR_PORT%7D/dance-to-spotify)" or "[http://localhost:{YOUR_PORT}/dance-to-spotify?roomIds={roomId1},{roomId2](http://localhost:%7BYOUR_PORT%7D/dance-to-spotify?roomIds=%7BroomId1%7D,%7BroomId2)}..." (if you are enabling for selected rooms), and that's it.
+    * From the above example, you can easily determine your roomId from the number of objects in each roomId.
+    * If your setup is a bit more complicated where you have similar number of bulbs in multiple rooms, you can simply go with trial and error method to determine the roomIds or you can check the mac addresses in your router's admin panel to determine the room they are in.
+8. Now go to "[http://localhost:8888/dance-to-spotify](http://localhost:8888/dance-to-spotify)" or "[http://localhost:8888/dance-to-spotify?roomIds=6931115,6930575](http://localhost:8888/dance-to-spotify?roomIds=6931115,6930575)" (if you are enabling for selected rooms), and that's it.
 
 If your Spotify music is playing, your lights should automatically change color to each beat synchronously. You can play with the app by pausing the music, changing the track, etc. If you stop the music completely, then the API call needs to be made again. This is done to preserve API rate limits and achieve efficiency.
 
