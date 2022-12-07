@@ -16,7 +16,7 @@ export const getRooms = async (): Promise<Record<string, any>> => {
       socket.setBroadcast(true);
       const message = '{ "method": "getSystemConfig", "params": {} }';
 
-      sendMessage(message, socket, wizConfig.routerIpRange, 5, 1000);
+      sendMessage(message, socket, wizConfig.broadcastAddress, 5, 1000);
 
       socket.on('message', (msg, rinfo) => {
         const parsedMessage = JSON.parse(msg.toString('utf-8'));
