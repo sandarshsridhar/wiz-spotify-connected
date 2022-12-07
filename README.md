@@ -24,8 +24,8 @@ A service to sync your [Philips Wiz lights](https://www.wizconnected.com/) to pl
 ## How to run
 
 1. Run `npm i` in a terminal in the root of this repo. This will install all the necessary packages.
-2. Create a **.env** file in the root of your folder and fill in the details using **sample-env** file present in the repo as a reference.
-    <em>Note</em>: You may have to change the router IP range depending on what your router uses.
+2. Create a file with name **.env** in the root of your folder and fill in the details using **sample-env** file present in the repo as a reference. 
+    <em>Note</em>: You may have to change the broadcast address depending on what your router uses. If you have trouble discovering lights with your router's broadcast address, please **remove that variable** from your **.env** file. This will make the app use the default broadcast address which is `255.255.255.255`.
 3. Run `npm run start`.
 4. Before the server is available to take requests, it gathers the IP and mac addresses of all the light bulbs in your home and saves them in its internal cache.
 5. Once the startup is done, You will see "⚡️[server]: Server is running at [http://localhost:8888](http://localhost:8888)" in your console. Now, your app is ready to take requests.
@@ -66,12 +66,15 @@ A service to sync your [Philips Wiz lights](https://www.wizconnected.com/) to pl
          ]
       }
     ```
-
     * From the above example, you can easily determine your roomId from the number of objects in each roomId.
     * If your setup is a bit more complicated where you have similar number of bulbs in multiple rooms, you can simply go with trial and error method to determine the roomIds or you can check the mac addresses in your router's admin panel to determine the room they are in.
 8. Now go to "[http://localhost:8888/dance-to-spotify](http://localhost:8888/dance-to-spotify)" or "[http://localhost:8888/dance-to-spotify?roomIds=6931115,6930575](http://localhost:8888/dance-to-spotify?roomIds=6931115,6930575)" (if you are enabling for selected rooms), and that's it.
 
+***
+
 If your Spotify music is playing, your lights should automatically change color to each beat synchronously. You can play with the app by pausing the music, changing the track, etc. If you stop the music completely, then the API call needs to be made again. This is done to preserve API rate limits and achieve efficiency.
+
+<strong>Note</strong>: If you run into any issues, run the app in debug mode (`npm run start debug`) to determine the cause.
 
 Hope you have fun! Thanks for checking out this repo! 😁
 
