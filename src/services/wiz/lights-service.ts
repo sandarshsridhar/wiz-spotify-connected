@@ -5,21 +5,27 @@ import { Bulb, Color, ColorSpace } from '../../classes/type-definitions.js';
 import { wizConfig } from '../../configs/wiz-config.js';
 import { calculateColors } from '../../utils/color-picker.js';
 import { container } from '../../utils/inversify-orchestrator.js';
+import { Logger } from '../../utils/logger.js';
 import { TYPES } from '../../utils/types.js';
 
 export const getRooms = async (): Promise<Record<string, any>> => {
   const socket = container.get<Socket>(TYPES.Socket);
+  const logger = container.get<Logger>(TYPES.Logger);
 
   const promise = new Promise<Map<string, Map<string, string>>>((resolve) => {
     const bulbs = new Map<string, Map<string, string>>();
     socket.bind(() => {
       socket.setBroadcast(true);
+      const registerMessage = '{"method":"registration","params":{"phoneMac":"AAAAAAAAAAAA","register":true,"phoneIp":"1.2.3.4","id":"1"}}';
       const message = '{ "method": "getSystemConfig", "params": {} }';
 
+      sendMessage(registerMessage, socket, wizConfig.broadcastAddress, 5, 100);
       sendMessage(message, socket, wizConfig.broadcastAddress, 5, 1000);
 
       socket.on('message', (msg, rinfo) => {
         const parsedMessage = JSON.parse(msg.toString('utf-8'));
+
+        logger.debug(parsedMessage, rinfo);
 
         if (parsedMessage?.method === 'getSystemConfig') {
           const current = bulbs.get(parsedMessage.result.roomId) ?? new Map();
@@ -33,7 +39,7 @@ export const getRooms = async (): Promise<Record<string, any>> => {
     setTimeout(() => {
       resolve(bulbs);
       socket.close();
-    }, 6000);
+    }, 7000);
   });
 
   return buildRoomData(await promise);
@@ -46,7 +52,7 @@ export const setRoom = async (roomId: string, config: Bulb, colorSpace?: ColorSp
 
   await new Promise<void>((resolve) => {
     socket.bind(() => {
-      socket.setBroadcast(true);
+      // socket.setBroadcast(true);
       let message: string;
       let colors: Array<Color>;
 
@@ -98,7 +104,10 @@ const buildStandardBulbMessage = (config: Bulb) => {
 };
 
 const sendMessage = (message: string, socket: Socket, ip: string, maxTries?: number, delay?: number) => {
+  const logger = container.get<Logger>(TYPES.Logger);
+
   if (!maxTries) {
+    logger.debug(message, ip);
     nextTick(() => socket.send(message, wizConfig.wizListenerPort, ip));
   } else {
     let counter = 1;
