@@ -22,13 +22,13 @@ export type Beats = {
 };
 
 export enum ColorSpace {
-  'purple',
-  'pink',
-  'red',
-  'orange',
-  'yellow',
-  'green',
-  'blue'
+  purple,
+  pink,
+  red,
+  orange,
+  yellow,
+  green,
+  blue
 }
 
 export type Color = {
@@ -41,4 +41,9 @@ export type Lights = {
   delayMs: number;
   colorSpace: ColorSpace,
   brightness: number;
+}
+
+export enum LogOutput {
+  console,
+  file
 }
