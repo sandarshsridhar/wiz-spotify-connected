@@ -3,5 +3,6 @@ export const TYPES = {
   CacheManager: Symbol('CacheManager'),
   Socket: Symbol('Socket'),
   EventBus: Symbol('EventBus'),
-  Logger: Symbol('Logger')
+  Logger: Symbol('Logger'),
+  FileWriter: Symbol('FileWriter')
 };

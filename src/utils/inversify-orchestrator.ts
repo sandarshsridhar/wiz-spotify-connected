@@ -4,6 +4,8 @@ import NodeCache from 'node-cache';
 import * as dgram from 'node:dgram';
 import { Socket } from 'node:dgram';
 import { EventEmitter } from 'node:events';
+import { LogOutput } from '../classes/type-definitions.js';
+import { FileWriter } from './file-writer.js';
 import { createHttpClient } from './http-client.js';
 import { Logger } from './logger.js';
 import { TYPES } from './types.js';
@@ -17,8 +19,8 @@ const createContainer = (): Container => {
   }));
 
   const enableDebugMode = process.argv.some(arg => arg === 'debug');
-
-  const logger = new Logger(enableDebugMode);
+  const logOutput = process.argv.some(arg => arg === 'file') ? LogOutput.file : LogOutput.console;
+  const logger = new Logger(enableDebugMode, logOutput, new FileWriter());
 
   container.bind<Logger>(TYPES.Logger).toConstantValue(logger);
   container.bind<Got>(TYPES.HttpClient).toConstantValue(createHttpClient(logger));
