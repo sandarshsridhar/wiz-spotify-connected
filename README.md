@@ -24,7 +24,7 @@ A service to sync your [Philips Wiz lights](https://www.wizconnected.com/) to pl
 ## How to run
 
 1. Run `npm i` in a terminal in the root of this repo. This will install all the necessary packages.
-2. Create a file with name **.env** in the root of your folder and fill in the details using **sample-env** file present in the repo as a reference. 
+2. Create a file with name **.env** in the root of your folder and fill in the details using **sample-env** file present in the repo as a reference.
     <em>Note</em>: You may have to change the broadcast address depending on what your router uses. If you have trouble discovering lights with your router's broadcast address, please **remove that variable** from your **.env** file. This will make the app use the default broadcast address which is `255.255.255.255`.
 3. Run `npm run start`.
 4. Before the server is available to take requests, it gathers the IP and mac addresses of all the light bulbs in your home and saves them in its internal cache.
@@ -74,7 +74,7 @@ A service to sync your [Philips Wiz lights](https://www.wizconnected.com/) to pl
 
 If your Spotify music is playing, your lights should automatically change color to each beat synchronously. You can play with the app by pausing the music, changing the track, etc. If you stop the music completely, then the API call needs to be made again. This is done to preserve API rate limits and achieve efficiency.
 
-<strong>Note</strong>: If you run into any issues, run the app in debug mode (`npm run start debug`) to determine the cause.
+<strong>Note</strong>: If you run into any issues, run the app in debug mode (`npm run start debug`) to determine the cause. If you prefer getting the debug logs in a file, you can run (`npm run start debug file`).
 
 Hope you have fun! Thanks for checking out this repo! 😁
 
