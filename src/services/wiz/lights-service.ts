@@ -16,11 +16,9 @@ export const getRooms = async (): Promise<Record<string, any>> => {
     const bulbs = new Map<string, Map<string, string>>();
     socket.bind(() => {
       socket.setBroadcast(true);
-      const registerMessage = '{"method":"registration","params":{"phoneMac":"AAAAAAAAAAAA","register":true,"phoneIp":"1.2.3.4","id":"1"}}';
       const message = '{ "method": "getSystemConfig", "params": {} }';
 
-      sendMessage(registerMessage, socket, wizConfig.broadcastAddress, 5, 100);
-      sendMessage(message, socket, wizConfig.broadcastAddress, 5, 1000);
+      sendMessage(message, socket, wizConfig.broadcastAddress, wizConfig.discoveryTries, 1000);
 
       socket.on('message', (msg, rinfo) => {
         const parsedMessage = JSON.parse(msg.toString('utf-8'));
@@ -39,7 +37,7 @@ export const getRooms = async (): Promise<Record<string, any>> => {
     setTimeout(() => {
       resolve(bulbs);
       socket.close();
-    }, 7000);
+    }, wizConfig.discoveryTimeout);
   });
 
   return buildRoomData(await promise);
@@ -52,7 +50,6 @@ export const setRoom = async (roomId: string, config: Bulb, colorSpace?: ColorSp
 
   await new Promise<void>((resolve) => {
     socket.bind(() => {
-      // socket.setBroadcast(true);
       let message: string;
       let colors: Array<Color>;
 
