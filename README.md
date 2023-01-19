@@ -69,12 +69,11 @@ A service to sync your [Philips Wiz lights](https://www.wizconnected.com/) to pl
     * From the above example, you can easily determine your roomId from the number of objects in each roomId.
     * If your setup is a bit more complicated where you have similar number of bulbs in multiple rooms, you can simply go with trial and error method to determine the roomIds or you can check the mac addresses in your router's admin panel to determine the room they are in.
 8. Now go to "[http://localhost:8888/dance-to-spotify](http://localhost:8888/dance-to-spotify)" or "[http://localhost:8888/dance-to-spotify?roomIds=6931115,6930575](http://localhost:8888/dance-to-spotify?roomIds=6931115,6930575)" (if you are enabling for selected rooms), and that's it.
+9. If you would like to keep the app running but turn off the dance session, you can do so by calling "[http://localhost:8888/dance-to-spotify/abort](http://localhost:8888/dance-to-spotify/abort)" (Useful for running the app on the background in perptuity).
 
 ***
 
 If your Spotify music is playing, your lights should automatically change color to each beat synchronously. You can play with the app by pausing the music, changing the track, etc. If you stop the music completely, then the API call needs to be made again. This is done to preserve API rate limits and achieve efficiency.
-
-If you would like to keep the app running but turn off the dance session, you can do so by calling "[http://localhost:8888/dance-to-spotify/abort](http://localhost:8888/dance-to-spotify/abort)"
 
 <strong>Note</strong>: If you run into any issues, run the app in debug mode (`npm run start debug`) to determine the cause. If you prefer getting the debug logs in a file, you can run (`npm run start debug file`).
 
