@@ -67,4 +67,10 @@ danceToSpotifyRouter.get('/dance-to-spotify', async (req: Request) => {
   }
 });
 
+danceToSpotifyRouter.get('/dance-to-spotify/abort', async (_req: Request, res: Response) => {
+  cacheManager.set('instance', 'stopped');
+
+  res.status(200).send('Aborted!');
+});
+
 export default danceToSpotifyRouter;
