@@ -13,6 +13,7 @@ import { TYPES } from '../../utils/types.js';
 export const emitDanceToSpotifyEvent = async (): Promise<void> => {
   const eventBus = container.get<EventEmitter>(TYPES.EventBus);
   const logger = container.get<Logger>(TYPES.Logger);
+  const cacheManager = container.get<NodeCache>(TYPES.CacheManager);
 
   const retryLimit = 3;
   let retries = 0;
@@ -21,7 +22,7 @@ export const emitDanceToSpotifyEvent = async (): Promise<void> => {
   let timer = process.hrtime();
 
   while (true) {
-    if (currentlyPlaying) {
+    if (currentlyPlaying && cacheManager.get('instance') === 'running') {
       const song = currentlyPlaying;
       const analysis = await getAudioAnalysis(song.id);
       const beatsMap = getBeatsMap(analysis, song.id);
