@@ -74,6 +74,8 @@ A service to sync your [Philips Wiz lights](https://www.wizconnected.com/) to pl
 
 If your Spotify music is playing, your lights should automatically change color to each beat synchronously. You can play with the app by pausing the music, changing the track, etc. If you stop the music completely, then the API call needs to be made again. This is done to preserve API rate limits and achieve efficiency.
 
+If you would like to keep the app running but turn off the dance session, you can do so by calling "[http://localhost:8888/dance-to-spotify/abort](http://localhost:8888/dance-to-spotify/abort)"
+
 <strong>Note</strong>: If you run into any issues, run the app in debug mode (`npm run start debug`) to determine the cause. If you prefer getting the debug logs in a file, you can run (`npm run start debug file`).
 
 Hope you have fun! Thanks for checking out this repo! 😁
