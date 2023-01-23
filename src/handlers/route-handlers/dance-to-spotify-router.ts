@@ -57,8 +57,10 @@ danceToSpotifyRouter.get('/dance-to-spotify', async (req: Request) => {
       roomIds = Object.keys(<never>cacheManager.get('rooms'));
     }
 
+    const isPartyMode = req.query.mode === 'party';
+
     await listenToDanceToSpotifyEvent(roomIds);
-    await emitDanceToSpotifyEvent();
+    await emitDanceToSpotifyEvent(isPartyMode);
 
     cacheManager.set('instance', 'stopped');
   } catch (err: any) {

@@ -10,7 +10,7 @@ import { container } from '../../utils/inversify-orchestrator.js';
 import { Logger } from '../../utils/logger.js';
 import { TYPES } from '../../utils/types.js';
 
-export const emitDanceToSpotifyEvent = async (): Promise<void> => {
+export const emitDanceToSpotifyEvent = async (isPartyMode: boolean): Promise<void> => {
   const eventBus = container.get<EventEmitter>(TYPES.EventBus);
   const logger = container.get<Logger>(TYPES.Logger);
   const cacheManager = container.get<NodeCache>(TYPES.CacheManager);
@@ -33,9 +33,9 @@ export const emitDanceToSpotifyEvent = async (): Promise<void> => {
         retries = 0;
 
         const beats = getBeats(beatsMap, song);
-        const lights = translateBeatsToLights(beats);
+        const lights = translateBeatsToLights(beats, isPartyMode, alternateBrightness);
 
-        eventBus.emit('changeLights', alternateBrightness ? lights.brightness : 10, lights.colorSpace);
+        eventBus.emit('changeLights', lights.brightness, lights.colorSpace);
 
         await sleep(lights.delayMs);
 
@@ -107,12 +107,19 @@ const getBeatsMap = (analysis: AudioAnalysis, id: string) => {
   return beatsMap;
 };
 
-const translateBeatsToLights = (beats: Beats) => {
+const translateBeatsToLights = (beats: Beats, isPartyMode: boolean, alternateBrightness: boolean) => {
   const lights = {
     delayMs: 1000 / beats.beatsPerSec,
     colorSpace: getColorSpace(beats.key),
     brightness: Math.max(10, Math.round(beats.relativeLoudness))
   };
+
+  if (isPartyMode) {
+    lights.brightness = alternateBrightness ? lights.brightness : 10;
+  } else {
+    lights.brightness = alternateBrightness ? lights.brightness : Math.round(0.5 * lights.brightness);
+    lights.delayMs = 2 * lights.delayMs;
+  }
 
   return lights;
 };
