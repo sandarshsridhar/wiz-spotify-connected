@@ -75,6 +75,12 @@ A service to sync your [Philips Wiz lights](https://www.wizconnected.com/) to pl
 
 If your Spotify music is playing, your lights should automatically change color to each beat synchronously. You can play with the app by pausing the music, changing the track, etc. If you stop the music completely, then the API call needs to be made again. This is done to preserve API rate limits and achieve efficiency.
 
+### Party Mode
+
+* This app also has a party mode that takes the effect up a notch by changing the lights more aggressively and alternating between the lowest and highest brightness levels. To run the app in party mode, all you have to do is pass another query string in the URL called `mode` and set it to `party`. For e.g., "[http://localhost:8888/dance-to-spotify?roomIds=6931115&mode=party](http://localhost:8888/dance-to-spotify?roomIds=6931115&mode=party)".
+
+<strong>Warning</strong>: This is not for everyone as the lights change rapidly and alternate between lowest and the highest brightness levels. If you feel nauseous or uncomfortable, please stop using this mode.
+
 <strong>Note</strong>: If you run into any issues, run the app in debug mode (`npm run start debug`) to determine the cause. If you prefer getting the debug logs in a file, you can run (`npm run start debug file`).
 
 Hope you have fun! Thanks for checking out this repo! 😁
