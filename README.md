@@ -66,6 +66,7 @@ A service to sync your [Philips Wiz lights](https://www.wizconnected.com/) to pl
          ]
       }
     ```
+
     * From the above example, you can easily determine your roomId from the number of objects in each roomId.
     * If your setup is a bit more complicated where you have similar number of bulbs in multiple rooms, you can simply go with trial and error method to determine the roomIds or you can check the mac addresses in your router's admin panel to determine the room they are in.
 8. Now go to "[http://localhost:8888/dance-to-spotify](http://localhost:8888/dance-to-spotify)" or "[http://localhost:8888/dance-to-spotify?roomIds=6931115,6930575](http://localhost:8888/dance-to-spotify?roomIds=6931115,6930575)" (if you are enabling for selected rooms), and that's it.
@@ -82,6 +83,8 @@ If your Spotify music is playing, your lights should automatically change color 
 <strong>Warning</strong>: This is not for everyone as the lights change rapidly and alternate between lowest and the highest brightness levels. If you feel nauseous or uncomfortable, please stop using this mode.
 
 <strong>Note</strong>: If you run into any issues, run the app in debug mode (`npm run start debug`) to determine the cause. If you prefer getting the debug logs in a file, you can run (`npm run start debug file`).
+
+* If you get `no such file or directory` or a similar error on `debug-log.txt` file, it is because your system has not allowed the app to create the log file. In such cases, please create an empty file with name `debug-logs.txt` under the logs folder (create the logs folder under root of your project if it does not exist already). This should resolve it.
 
 Hope you have fun! Thanks for checking out this repo! 😁
 
