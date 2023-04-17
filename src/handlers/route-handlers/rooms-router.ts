@@ -12,7 +12,7 @@ const logger = container.get<Logger>(TYPES.Logger);
 
 roomsRouter.get('/rooms', async (_req: Request, res: Response) => {
   try {
-    res.header('Content-type', 'application/json').status(200).send(cacheManager.get('rooms'));
+    res.header('Content-type', 'application/json').status(200).send(JSON.stringify(cacheManager.get('rooms'), null, 1));
   } catch (err: any) {
     res.status(500).send('Error occurred');
     logger.error('Error occurred', err.message);
