@@ -86,6 +86,8 @@ If your Spotify music is playing, your lights should automatically change color 
 
 * If you get `no such file or directory` or a similar error on `debug-log.txt` file, it is because your system has not allowed the app to create the log file. In such cases, please create an empty file with name `debug-logs.txt` under the logs folder (create the logs folder under root of your project if it does not exist already). This should resolve it.
 
+**This repostory is actively maintained. Please feel free to start a thread in the discussions section or create an issue.**
+
 Hope you have fun! Thanks for checking out this repo! 😁
 
 ## References
