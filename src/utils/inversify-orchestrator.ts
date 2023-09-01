@@ -24,7 +24,7 @@ const createContainer = (): Container => {
 
   container.bind<Logger>(TYPES.Logger).toConstantValue(logger);
   container.bind<Got>(TYPES.HttpClient).toConstantValue(createHttpClient(logger));
-  container.bind<Socket>(TYPES.Socket).toDynamicValue(() => dgram.createSocket('udp4'));
+  container.bind<Socket>(TYPES.Socket).toDynamicValue(() => dgram.createSocket('udp4')).inRequestScope();
   container.bind<EventEmitter>(TYPES.EventBus).toConstantValue(new EventEmitter());
 
   return container;

@@ -2,21 +2,22 @@ import NodeCache from 'node-cache';
 import { EventEmitter } from 'node:events';
 import { AudioAnalysis } from '../../classes/audio-analysis.js';
 import { CurrentlyPlaying } from '../../classes/currently-playing.js';
-import { Beats } from '../../classes/type-definitions.js';
+import { Beats, Mode } from '../../classes/type-definitions.js';
 import { apiConfig } from '../../configs/spotify-config.js';
-import { getAudioAnalysis, getCurrentlyPlayingSong } from '../../services/spotify/spotify-api-service.js';
+import { getAudioAnalysis, getAudioFeatures, getCurrentlyPlayingSong } from '../../services/spotify/spotify-api-service.js';
 import { getColorSpace } from '../../utils/color-picker.js';
 import { container } from '../../utils/inversify-orchestrator.js';
 import { Logger } from '../../utils/logger.js';
 import { TYPES } from '../../utils/types.js';
+import { appConfig } from '../../configs/app-config.js';
+import { AudioFeatures } from '../../classes/audio-features.js';
 
-export const emitDanceToSpotifyEvent = async (isPartyMode: boolean): Promise<void> => {
+export const emitDanceToSpotifyEvent = async (mode: Mode): Promise<void> => {
   const eventBus = container.get<EventEmitter>(TYPES.EventBus);
   const logger = container.get<Logger>(TYPES.Logger);
   const cacheManager = container.get<NodeCache>(TYPES.CacheManager);
 
-  const retryLimit = 3;
-  let retries = 0;
+  let playbackCheckAttempt = 0;
   let currentlyPlaying = await getCurrentlyPlayingSong();
   let alternateBrightness = true; // This makes the effect pop more.
   let timer = process.hrtime();
@@ -24,16 +25,17 @@ export const emitDanceToSpotifyEvent = async (isPartyMode: boolean): Promise<voi
   while (true) {
     if (currentlyPlaying && cacheManager.get('instance') === 'running') {
       const song = currentlyPlaying;
+      const features = await getAudioFeatures(song.id);
       const analysis = await getAudioAnalysis(song.id);
       const beatsMap = getBeatsMap(analysis, song.id);
 
       if (song.isPlaying) {
+        playbackCheckAttempt = 0;
+
         logger.debug(`Playing: ${song.name}`);
 
-        retries = 0;
-
         const beats = getBeats(beatsMap, song);
-        const lights = translateBeatsToLights(beats, isPartyMode, alternateBrightness);
+        const lights = translateBeatsToLights(beats, isPartyMode(mode, features), alternateBrightness);
 
         eventBus.emit('changeLights', lights.brightness, lights.colorSpace);
 
@@ -41,13 +43,13 @@ export const emitDanceToSpotifyEvent = async (isPartyMode: boolean): Promise<voi
 
         alternateBrightness = !alternateBrightness;
       } else {
-        const waitMs = Math.pow(2, retries) * 1000;
+        const waitMs = calculateDelay(playbackCheckAttempt);
 
-        logger.debug(`Playback paused: ${song.name}. Waiting ${waitMs / 1000} seconds...`);
+        logger.info(`Playback paused: ${song.name}. Waiting ${waitMs / 1000} seconds...`);
 
         await sleep(waitMs);
 
-        retries < retryLimit ? retries++ : retries;
+        playbackCheckAttempt++;
       }
 
       setImmediate(async () => {
@@ -57,10 +59,22 @@ export const emitDanceToSpotifyEvent = async (isPartyMode: boolean): Promise<voi
         }
       });
     } else {
-      logger.warn('Nothing is playing currently!');
+      if (!currentlyPlaying) {
+        logger.warn('Nothing is playing currently!');
+      }
       return;
     }
   }
+};
+
+const isPartyMode = (mode: Mode, features: AudioFeatures): boolean => {
+  if (mode === Mode.auto) {
+    if (features.danceability > 0.5 && features.energy > 0.5 && features.valence > 0.5) return true;
+
+    return false;
+  }
+
+  return mode === Mode.party;
 };
 
 const isLaterThanPollingDelay = (timer: [number, number]) => {
@@ -122,4 +136,8 @@ const translateBeatsToLights = (beats: Beats, isPartyMode: boolean, alternateBri
   }
 
   return lights;
+};
+
+const calculateDelay = (attempt: number): number => {
+  return Math.min((Math.pow(2, attempt) * 1000), appConfig.spotifyPlaybackCheckMaxDelayMs);
 };

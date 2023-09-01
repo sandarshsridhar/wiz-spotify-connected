@@ -7,6 +7,7 @@ import { apiConfig } from '../../configs/spotify-config.js';
 import { container } from '../../utils/inversify-orchestrator.js';
 import { TYPES } from '../../utils/types.js';
 import { getAuthToken } from './spotify-auth-service.js';
+import { AudioFeatures } from '../../classes/audio-features.js';
 
 export const getCurrentlyPlayingSong = async (retryCount = 0): Promise<CurrentlyPlaying | null> => {
   let result = await get('me/player');
@@ -26,7 +27,7 @@ export const getCurrentlyPlayingSong = async (retryCount = 0): Promise<Currently
   return null;
 };
 
-export const getAudioAnalysis = async (id: string) => {
+export const getAudioAnalysis = async (id: string): Promise<AudioAnalysis> => {
   const cacheManager = container.get<NodeCache>(TYPES.CacheManager);
 
   let audioAnalysis = cacheManager.get<AudioAnalysis>(`audioAnalysis-${id}`);
@@ -40,6 +41,22 @@ export const getAudioAnalysis = async (id: string) => {
   cacheManager.set(`audioAnalysis-${id}`, audioAnalysis, 2 * 60 * 60);
 
   return audioAnalysis;
+};
+
+export const getAudioFeatures = async (id: string): Promise<AudioFeatures> => {
+  const cacheManager = container.get<NodeCache>(TYPES.CacheManager);
+
+  let audioFeatures = cacheManager.get<AudioFeatures>(`audioFeatures-${id}`);
+
+  if (audioFeatures) return audioFeatures;
+
+  const result = (await get(`audio-features/${id}`)).body;
+
+  audioFeatures = plainToInstance(AudioFeatures, JSON.parse(result));
+
+  cacheManager.set(`audioFeatures-${id}`, audioFeatures, 2 * 60 * 60);
+
+  return audioFeatures;
 };
 
 const get = async (path: string) => {

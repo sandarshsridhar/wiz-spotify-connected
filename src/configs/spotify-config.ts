@@ -11,5 +11,5 @@ export const authConfig = {
 
 export const apiConfig = {
   url: process.env.SPOTIFY_API_URL || 'https://api.spotify.com/v1',
-  pollingDelayMs: Number.parseInt(process.env.SPOTIFY_POLLING_DELAY_MS || '1000')
+  pollingDelayMs: Number.parseInt(process.env.SPOTIFY_POLLING_DELAY_MS ?? '1000')
 };
