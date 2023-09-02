@@ -80,17 +80,17 @@ If your Spotify music is playing, your lights should automatically change color 
 
 ### Calm
 
-* You should choose this mode if you want to run the app casually while playing serene or slow music, or if you don't like lights flickering too frequently, in general. Running the app in this mode changes the lights 2 times slower than the tempo of the song. This is also the recommended mode for people with discomfort to probe effects. To run the app in this mode, you have to pass another query string in the URL called `mode` and set it to `calm`. For e.g., "[http://localhost:8888/dance-to-spotify?roomIds=6931115&mode=calm](http://localhost:8888/dance-to-spotify?roomIds=6931115&mode=calm)".
+* You should choose this mode if you want to run the app casually while playing serene or slow music, or if you don't like lights flickering too frequently, in general. Running the app in this mode changes the lights 2 times slower than the tempo of the song. This is also the recommended mode for people with discomfort to lights changing too frequently. To run the app in this mode, you have to pass another query string in the URL called `mode` and set it to `calm`. For e.g., "[http://localhost:8888/dance-to-spotify?roomIds=6931115&mode=calm](http://localhost:8888/dance-to-spotify?roomIds=6931115&mode=calm)".
 
 ### Party
 
-* This app also has a party mode that takes the effect up a notch by changing the lights more aggressively and alternating between the lowest and highest brightness levels. To run the app in party mode, all you have to do is pass another query string in the URL called `mode` and set it to `party`. For e.g., "[http://localhost:8888/dance-to-spotify?roomIds=6931115&mode=party](http://localhost:8888/dance-to-spotify?roomIds=6931115&mode=party)".
+* This app also has a party mode that takes the effect up a notch by changing the lights more aggressively and alternating between the lowest and highest brightness levels. To run the app in party mode, set `mode` query string parameter `party`. For e.g., "[http://localhost:8888/dance-to-spotify?roomIds=6931115&mode=party](http://localhost:8888/dance-to-spotify?roomIds=6931115&mode=party)".
 
 <strong>Warning</strong>: This is not for everyone as the lights change rapidly and alternate between lowest and the highest brightness levels. If you feel nauseous or uncomfortable, please stop using this mode.
 
 ### Auto
 
-When you don't specify a mode, the app will automatically run in `auto` mode. The app uses tempo, danceability and energy scores of the song to determine the mode. The app is smart enough to change the mode for every song. This is the recommended way to use the app, for most people.
+When you don't specify a mode, the app will automatically run in `auto` mode. The app determines the mode for every song by using tempo, danceability and energy scores of the song. For most people, this is the recommended way to use the app.
 
 <strong>Note</strong>: If you run into any issues, run the app in debug mode (`npm run start debug`) to determine the cause. If you prefer getting the debug logs in a file, you can run (`npm run start debug file`).
 
