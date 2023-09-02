@@ -90,7 +90,7 @@ If your Spotify music is playing, your lights should automatically change color 
 
 ### Auto
 
-When you don't specify a mode, the app will automatically run in `auto` mode. The app determines the mode for every song by using tempo, danceability and energy scores of the song. For most people, this is the recommended way to use the app.
+When you don't specify a mode, the app will automatically run in `auto` mode as this is the default mode for the app. The app determines the mode for every song by using tempo, danceability and energy scores of the song. For most people, this is the recommended way to use the app.
 
 <strong>Note</strong>: If you run into any issues, run the app in debug mode (`npm run start debug`) to determine the cause. If you prefer getting the debug logs in a file, you can run (`npm run start debug file`).
 
