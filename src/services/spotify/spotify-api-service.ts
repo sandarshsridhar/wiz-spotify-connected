@@ -36,7 +36,7 @@ export const getAudioAnalysis = async (id: string): Promise<AudioAnalysis> => {
 
   const result = (await get(`audio-analysis/${id}`)).body;
 
-  audioAnalysis = plainToInstance(AudioAnalysis, JSON.parse(result));
+  audioAnalysis = plainToInstance(AudioAnalysis, JSON.parse(result), { excludeExtraneousValues: true });
 
   cacheManager.set(`audioAnalysis-${id}`, audioAnalysis, 2 * 60 * 60);
 
@@ -52,7 +52,7 @@ export const getAudioFeatures = async (id: string): Promise<AudioFeatures> => {
 
   const result = (await get(`audio-features/${id}`)).body;
 
-  audioFeatures = plainToInstance(AudioFeatures, JSON.parse(result));
+  audioFeatures = plainToInstance(AudioFeatures, JSON.parse(result), { excludeExtraneousValues: true });
 
   cacheManager.set(`audioFeatures-${id}`, audioFeatures, 2 * 60 * 60);
 

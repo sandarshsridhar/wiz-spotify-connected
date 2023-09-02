@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { Got } from 'got';
 import { Container } from 'inversify';
 import NodeCache from 'node-cache';
@@ -9,6 +10,7 @@ import { FileWriter } from './file-writer.js';
 import { createHttpClient } from './http-client.js';
 import { Logger } from './logger.js';
 import { TYPES } from './types.js';
+import { DanceEngine } from './dance-engine.js';
 
 const createContainer = (): Container => {
   const container = new Container();
@@ -23,6 +25,7 @@ const createContainer = (): Container => {
   const logger = new Logger(enableDebugMode, logOutput, new FileWriter());
 
   container.bind<Logger>(TYPES.Logger).toConstantValue(logger);
+  container.bind<DanceEngine>(TYPES.DanceEngine).to(DanceEngine).inSingletonScope();
   container.bind<Got>(TYPES.HttpClient).toConstantValue(createHttpClient(logger));
   container.bind<Socket>(TYPES.Socket).toDynamicValue(() => dgram.createSocket('udp4')).inRequestScope();
   container.bind<EventEmitter>(TYPES.EventBus).toConstantValue(new EventEmitter());
