@@ -18,7 +18,7 @@ A service to sync your [Philips Wiz lights](https://www.wizconnected.com/) to pl
     * Create an app in the dashboard -> This creates your Client ID and Client Secret (You will need these when using this app).
     * Go to **EDIT SETTINGS** -> **Redirect URIs** -> add [http://localhost:8888/callback](http://localhost:8888/callback) (This is needed to get yourself authenticated when the app runs) -> hit **Save** to save your changes.
 2. You will also need to allow UDP communication with Wiz. You can do this by going to the Wiz app -> **Settings** -> **Security** -> Enable <strong>Allow Local Communication</strong>.
-3. You will need Node.js (16+) and NPM (8+) installed on your machine to run this app. If these are not installed, please install them before going to the next step.
+3. You will need Node.js (18+) and NPM (9+) installed on your machine to run this app. If these are not installed, please install them before going to the next step.
 4. Clone this repository.
 
 ## How to run
@@ -76,17 +76,27 @@ A service to sync your [Philips Wiz lights](https://www.wizconnected.com/) to pl
 
 If your Spotify music is playing, your lights should automatically change color to each beat synchronously. You can play with the app by pausing the music, changing the track, etc. If you stop the music completely, then the API call needs to be made again. This is done to preserve API rate limits and achieve efficiency.
 
-### Party Mode
+## Modes
 
-* This app also has a party mode that takes the effect up a notch by changing the lights more aggressively and alternating between the lowest and highest brightness levels. To run the app in party mode, all you have to do is pass another query string in the URL called `mode` and set it to `party`. For e.g., "[http://localhost:8888/dance-to-spotify?roomIds=6931115&mode=party](http://localhost:8888/dance-to-spotify?roomIds=6931115&mode=party)".
+### Calm
+
+* You should choose this mode if you want to run the app casually while playing serene or slow music, or if you don't like lights flickering too frequently, in general. Running the app in this mode changes the lights 2 times slower than the tempo of the song. This is also the recommended mode for people with discomfort to lights changing too frequently. To run the app in this mode, you have to pass another query string in the URL called `mode` and set it to `calm`. For e.g., "[http://localhost:8888/dance-to-spotify?roomIds=6931115&mode=calm](http://localhost:8888/dance-to-spotify?roomIds=6931115&mode=calm)".
+
+### Party
+
+* This app also has a party mode that takes the effect up a notch by changing the lights more aggressively and alternating between the lowest and highest brightness levels. To run the app in party mode, set `mode` query string parameter `party`. For e.g., "[http://localhost:8888/dance-to-spotify?roomIds=6931115&mode=party](http://localhost:8888/dance-to-spotify?roomIds=6931115&mode=party)".
 
 <strong>Warning</strong>: This is not for everyone as the lights change rapidly and alternate between lowest and the highest brightness levels. If you feel nauseous or uncomfortable, please stop using this mode.
+
+### Auto
+
+When you don't specify a mode, the app will automatically run in `auto` mode as this is the default mode for the app. The app determines the mode for every song by using tempo, danceability and energy scores of the song. For most people, this is the recommended way to use the app.
 
 <strong>Note</strong>: If you run into any issues, run the app in debug mode (`npm run start debug`) to determine the cause. If you prefer getting the debug logs in a file, you can run (`npm run start debug file`).
 
 * If you get `no such file or directory` or a similar error on `debug-log.txt` file, it is because your system has not allowed the app to create the log file. In such cases, please create an empty file with name `debug-logs.txt` under the logs folder (create the logs folder under root of your project if it does not exist already). This should resolve it.
 
-**This repostory is actively maintained. Please feel free to start a thread in the discussions section or create an issue.**
+**This repository is actively maintained. Please feel free to start a thread in the discussions section or create an issue.**
 
 Hope you have fun! Thanks for checking out this repo! 😁
 

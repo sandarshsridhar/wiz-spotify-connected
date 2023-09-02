@@ -5,6 +5,7 @@ import { Logger } from '../../utils/logger.js';
 import { TYPES } from '../../utils/types.js';
 import { emitDanceToSpotifyEvent } from '../emitters/dance-to-spotify-emitter.js';
 import { listenToDanceToSpotifyEvent } from '../listeners/dance-to-spotify-listener.js';
+import { Mode } from '../../classes/type-definitions.js';
 
 const danceToSpotifyRouter = express.Router();
 const cacheManager = container.get<NodeCache>(TYPES.CacheManager);
@@ -57,10 +58,8 @@ danceToSpotifyRouter.get('/dance-to-spotify', async (req: Request) => {
       roomIds = Object.keys(<never>cacheManager.get('rooms'));
     }
 
-    const isPartyMode = req.query.mode === 'party';
-
     await listenToDanceToSpotifyEvent(roomIds);
-    await emitDanceToSpotifyEvent(isPartyMode);
+    await emitDanceToSpotifyEvent(<Mode>req.query.mode);
 
     cacheManager.set('instance', 'stopped');
   } catch (err: any) {

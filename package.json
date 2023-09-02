@@ -1,6 +1,6 @@
 {
   "name": "wiz-spotify-connected",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A service to dance 😉 (change) your Wiz lights to playing Spotify music.",
   "keywords": [
     "Spotify",
@@ -24,26 +24,27 @@
   },
   "dependencies": {
     "class-transformer": "0.5.1",
-    "dotenv": "16.0.3",
+    "dotenv": "16.3.1",
     "express": "4.18.2",
-    "got": "12.5.2",
+    "got": "13.0.0",
     "inversify": "6.0.1",
     "node-cache": "5.1.2",
-    "query-string": "7.1.1"
+    "query-string": "8.1.0",
+    "reflect-metadata": "0.1.13"
   },
   "devDependencies": {
-    "@types/express": "4.17.14",
-    "@types/node": "18.11.9",
-    "@typescript-eslint/eslint-plugin": "5.42.1",
-    "concurrently": "7.5.0",
-    "eslint": "8.27.0",
-    "nodemon": "2.0.20",
-    "rimraf": "3.0.2",
-    "sort-package-json": "2.1.0",
-    "typescript": "4.8.4"
+    "@types/express": "4.17.17",
+    "@types/node": "20.5.7",
+    "@typescript-eslint/eslint-plugin": "6.5.0",
+    "@typescript-eslint/parser": "6.5.0",
+    "eslint": "8.48.0",
+    "nodemon": "3.0.1",
+    "rimraf": "5.0.1",
+    "sort-package-json": "2.5.1",
+    "typescript": "5.2.2"
   },
   "engines": {
-    "node": ">=16",
-    "npm": ">=8"
+    "node": ">=18",
+    "npm": ">=9"
   }
 }

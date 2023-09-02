@@ -3,7 +3,7 @@
     "experimentalDecorators": true,
     "module": "NodeNext",
     "outDir": "./dist",
-    "target": "es2022",
+    "target": "ESNext",
     "moduleResolution": "NodeNext",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,

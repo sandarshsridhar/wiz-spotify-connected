@@ -47,3 +47,9 @@ export enum LogOutput {
   console,
   file
 }
+
+export enum Mode {
+  calm = 'calm',
+  party = 'party',
+  auto = 'auto'
+}
