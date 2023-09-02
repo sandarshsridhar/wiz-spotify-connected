@@ -18,7 +18,7 @@ A service to sync your [Philips Wiz lights](https://www.wizconnected.com/) to pl
     * Create an app in the dashboard -> This creates your Client ID and Client Secret (You will need these when using this app).
     * Go to **EDIT SETTINGS** -> **Redirect URIs** -> add [http://localhost:8888/callback](http://localhost:8888/callback) (This is needed to get yourself authenticated when the app runs) -> hit **Save** to save your changes.
 2. You will also need to allow UDP communication with Wiz. You can do this by going to the Wiz app -> **Settings** -> **Security** -> Enable <strong>Allow Local Communication</strong>.
-3. You will need Node.js (16+) and NPM (8+) installed on your machine to run this app. If these are not installed, please install them before going to the next step.
+3. You will need Node.js (18+) and NPM (9+) installed on your machine to run this app. If these are not installed, please install them before going to the next step.
 4. Clone this repository.
 
 ## How to run
