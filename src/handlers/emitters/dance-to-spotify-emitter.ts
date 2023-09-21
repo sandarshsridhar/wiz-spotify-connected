@@ -1,15 +1,15 @@
 import NodeCache from 'node-cache';
 import { EventEmitter } from 'node:events';
-import { Mode } from '../../classes/type-definitions.js';
+import { Options } from '../../classes/type-definitions.js';
 import { appConfig } from '../../configs/app-config.js';
+import { apiConfig } from '../../configs/spotify-config.js';
 import { getAudioAnalysis, getAudioFeatures, getCurrentlyPlayingSong } from '../../services/spotify/spotify-api-service.js';
 import { DanceEngine } from '../../utils/dance-engine.js';
 import { container } from '../../utils/inversify-orchestrator.js';
 import { Logger } from '../../utils/logger.js';
 import { TYPES } from '../../utils/types.js';
-import { apiConfig } from '../../configs/spotify-config.js';
 
-export const emitDanceToSpotifyEvent = async (mode: Mode): Promise<void> => {
+export const emitDanceToSpotifyEvent = async (options: Options): Promise<void> => {
   const eventBus = container.get<EventEmitter>(TYPES.EventBus);
   const logger = container.get<Logger>(TYPES.Logger);
   const cacheManager = container.get<NodeCache>(TYPES.CacheManager);
@@ -33,14 +33,16 @@ export const emitDanceToSpotifyEvent = async (mode: Mode): Promise<void> => {
         logger.debug(`Playing: ${song.name}`);
 
         const beats = danceEngine.getBeats(beatsMap, song);
-        const isPartyMode = danceEngine.isPartyMode(mode, features);
+        const isPartyMode = danceEngine.isPartyMode(options.mode, features);
         const lights = danceEngine.translateBeatsToLights(beats, isPartyMode, alternateBrightness);
 
         eventBus.emit('changeLights', lights.brightness, lights.colorSpace);
 
         await sleep(lights.delayMs);
 
-        alternateBrightness = !alternateBrightness;
+        if (options.popEffect) {
+          alternateBrightness = !alternateBrightness;
+        }
       } else {
         const waitMs = calculateDelay(playbackCheckAttempt);
 

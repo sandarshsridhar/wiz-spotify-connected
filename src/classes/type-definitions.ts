@@ -43,6 +43,11 @@ export type Lights = {
   brightness: number;
 }
 
+export type Options = {
+  mode: Mode;
+  popEffect: boolean;
+}
+
 export enum LogOutput {
   console,
   file
@@ -53,3 +58,4 @@ export enum Mode {
   party = 'party',
   auto = 'auto'
 }
+
