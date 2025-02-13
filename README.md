@@ -2,6 +2,22 @@
 
 A service to sync your [Philips Wiz lights](https://www.wizconnected.com/) to playing Spotify music
 
+## Project Archived: Spotify API Changes
+
+This project is now archived and no longer usable due to Spotify's recent changes to their Web API. As of November 27, 2024, Spotify has restricted access to essential API endpoints, including Audio Analysis, for newly created apps without Extended Quota Mode.
+
+Since this project relied on these APIs to sync Wiz lights to Spotify music, it is no longer functional.
+
+For more details, please read Spotify's official announcement [here](https://developer.spotify.com/blog/2024-11-27-changes-to-the-web-api).
+
+Thank you to everyone who supported and used this project while it lasted! ❤️
+
+If Spotify revises their decision on these API restrictions in the future, there is a possibility this project could be revived. Stay tuned for any updates!
+
+(The original project instructions and setup details remain below for reference.)
+
+
+
 ## Features
 
 * Built purely with Typescript and Express.js.
